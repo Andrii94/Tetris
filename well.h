@@ -1,5 +1,9 @@
 #pragma once
+#include "painter.h"
+#include "tetromino.h"
 
+const int SIZE_Y_ = 20;
+const int SIZE_X_ = 10;
 class Well {
 public:
     Well();
@@ -10,5 +14,9 @@ public:
      */
     bool isCollision(const Tetromino &) const;
     // перемішення тетроміни на полі
-    int unite(const Tetromino &);
+    void unite(const Tetromino &);
+    // видалення повністю заповненої ліній
+    int removeSolidLines();
+private:
+    bool map_[20][10];
 };

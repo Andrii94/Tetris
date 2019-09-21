@@ -1,4 +1,5 @@
 #pragma once
+#include <GL/gl.h>
 
 class Painter {
 public:
@@ -6,4 +7,4 @@ public:
                GREEN, BROWN, CYAN, BLACK };
     void rect(int x1, int y1, int x2, int y2);
     void setColor(Color);
-}
+};
