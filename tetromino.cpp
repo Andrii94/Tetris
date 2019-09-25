@@ -1,9 +1,12 @@
 #include "tetromino.h"
 
+/* Створення фігури зверху посередині */
 Tetromino::Tetromino(Name name):
     name_(name), angel_(0), x_(3), y_(0) {}
 
+/* Відображення фірури */
 void Tetromino::draw(Painter &p) const {
+    // задання кольора
     p.setColor(static_cast<Painter::Color>(name_));
     for (int y = 0; y < 4; ++y)
         for (int x = 0; x < 4; ++x)
@@ -13,6 +16,7 @@ void Tetromino::draw(Painter &p) const {
 }
 
 bool Tetromino::map(int x, int y) const{
+    /* Зберігається те як фігури повинні відображатись */
     static const char *SHAPES[] = {
         "  8 "
         "  8 "
@@ -49,6 +53,7 @@ bool Tetromino::map(int x, int y) const{
         "  8 "
         "    ", // T
     };
+    /* Відповідає за поворот фігури */
     static const struct {
         int x, y;
     } ROTATE[][16] = {
@@ -80,11 +85,13 @@ bool Tetromino::map(int x, int y) const{
     return SHAPES[name_][ROTATE[angel_][y * 4 + x].y * 4 + ROTATE[angel_][y * 4 + x].x] != ' ';
 }
 
+/* Рух фігури */
 void Tetromino::move(int dx, int dy) {
     x_ += dx;
     y_ += dy;
 }
 
+/* Поворот фігури */
 void Tetromino::rotate(Direction d) {
     angel_ = (angel_ + d + 4) % 4;
 }

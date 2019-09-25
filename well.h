@@ -18,5 +18,5 @@ public:
     // видалення повністю заповненої ліній
     int removeSolidLines();
 private:
-    bool map_[20][10];
+    bool map_[20][10]; // поле
 };

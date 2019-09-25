@@ -5,19 +5,21 @@
 Game game;
 
 void display () {
+    /* Відображення поля */
     glClear(GL_COLOR_BUFFER_BIT);
-    Painter p;
-    game.draw(p);
+    Painter p; // поле
+    game.draw(p); // зообразити гру на полі
     glutSwapBuffers();
 }
 
 void timer(int) {
     game.tick();
-    display();
-    glutTimerFunc(500, timer, 0);
+    display(); // перемалюванна поля
+    glutTimerFunc(500, timer, 0); // регулювання швиткості падіння елементів
 }
 
 void keyEvent(int key, int x, int y) {
+    /* Обробка натисканна клавіш клавіатури */
     switch (key) {
     case GLUT_KEY_LEFT:
         game.keyEvent(Game::LEFT);
@@ -32,10 +34,11 @@ void keyEvent(int key, int x, int y) {
         game.keyEvent(Game::DOWN);
         break;
     }
-    display();
+    display(); // перемалюванна зображення з новим положенням об'єкта
 }
 
 int main (int argc, char** argv) {
+    /* Початок програми */
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(40*8, 80*8); // 10x20 розмір поля
