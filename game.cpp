@@ -19,19 +19,27 @@ void Game::tick() {
         tetromino_ = t;
     }
     else {
+        // фіксування вігури на полі як його частина
         well_.unite(tetromino_);
+        // перевірка на заповнені ліній
         well_.removeSolidLines();
+        // створення новой фігури
         tetromino_ = Tetromino(static_cast<Tetromino::Name>(rand() % 7));
-        if (well_.isCollision(tetromino_))
+        if (well_.isCollision(tetromino_)) {
+            // фігурки досягли верха
             restart();
+            // зробити вивід результату
+        }
     }
 }
 
 void Game::restart() {
+    // почати спочатку
     well_ = Well();
 }
 
 void Game::keyEvent(Direction d) {
+    // рух елемента взалежності від натискання клавіші
     Tetromino t = tetromino_;
     switch (d) {
     case UP:
