@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <cstdlib>
 #include <ctime>
 #include "painter.h"
@@ -8,7 +9,7 @@
 class Game {
 public:
     // зміна полодення елемента
-    enum Direction { UP, DOWN, LEFT, RIGHT };
+    enum Direction { UP, DOWN, LEFT, RIGHT, FINISH };
     Game ();
     // зображення гри
     void draw(Painter &);
@@ -18,7 +19,10 @@ public:
     void restart();
     // зміна положення фігури гравцем
     void keyEvent(Direction);
+    uint64_t getRes(){ return res; }
 private:
     Well well_; //
     Tetromino tetromino_; // нова фігура на полі
+    uint64_t res;
+    bool finish;
 };

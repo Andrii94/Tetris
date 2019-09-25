@@ -1,8 +1,10 @@
 // Гра "Тетріс"
 #include <GL/glut.h>
+#include <cmath>
 #include "game.h"
 
 Game game;
+int t = 500, r = 0;
 
 void display () {
     /* Відображення поля */
@@ -15,11 +17,23 @@ void display () {
 void timer(int) {
     game.tick();
     display(); // перемалюванна поля
-    glutTimerFunc(500, timer, 0); // регулювання швиткості падіння елементів
+    if (static_cast<int>(game.getRes()) != r){
+        r = static_cast<int>(game.getRes());
+        if (6 > r)
+            t = 1000 - 100 * r;
+        else if (100 > r)
+            t = 400 - r*2;
+        else
+            t = 200 - log(r);
+    }
+    if (100 > t) t = 100;
+    glutTimerFunc(t, timer, 0); // регулювання швиткості падіння елементів
 }
 
 void keyEvent(int key, int x, int y) {
     /* Обробка натисканна клавіш клавіатури */
+    if (key == 27)
+        exit(0);
     switch (key) {
     case GLUT_KEY_LEFT:
         game.keyEvent(Game::LEFT);
@@ -37,6 +51,14 @@ void keyEvent(int key, int x, int y) {
     display(); // перемалюванна зображення з новим положенням об'єкта
 }
 
+void processNormalKeys(unsigned char key, int x, int y) {
+        if (key == 27)
+                exit(0);
+        else if (key==13){
+            game.keyEvent(Game::FINISH);
+        }
+}
+
 int main (int argc, char** argv) {
     /* Початок програми */
     glutInit(&argc, argv);
@@ -51,6 +73,7 @@ int main (int argc, char** argv) {
     glutDisplayFunc(display);
     timer(0);
     glutSpecialFunc(keyEvent);
+    glutKeyboardFunc(processNormalKeys);
     glutMainLoop();
 
     return 0;

@@ -1,14 +1,20 @@
 #include "game.h"
 
-Game::Game(): tetromino_(static_cast<Tetromino::Name>(0)) {
+Game::Game(): tetromino_(static_cast<Tetromino::Name>(0)), res(0) {
     // створення випадкової фігури в грі
     srand(time(0));
     tetromino_ = Tetromino(static_cast<Tetromino::Name>(rand() % 7));
+    res = 0;
+    finish = false;
 }
 
 void Game::draw(Painter &p) {
-    well_.draw(p); // зображення поля з фіксовиними елементами
-    tetromino_.draw(p); // зображення рухомої фігури
+    if (!finish) {
+        well_.draw(p); // зображення поля з фіксовиними елементами
+        tetromino_.draw(p); // зображення рухомої фігури
+    } else {
+        p.showFinish(res);
+    }
 }
 
 void Game::tick() {
@@ -22,12 +28,13 @@ void Game::tick() {
         // фіксування вігури на полі як його частина
         well_.unite(tetromino_);
         // перевірка на заповнені ліній
-        well_.removeSolidLines();
+        res += static_cast<uint64_t>(well_.removeSolidLines());
         // створення новой фігури
         tetromino_ = Tetromino(static_cast<Tetromino::Name>(rand() % 7));
         if (well_.isCollision(tetromino_)) {
             // фігурки досягли верха
-            restart();
+            finish = true;
+//            restart();
             // зробити вивід результату
         }
     }
@@ -53,6 +60,10 @@ void Game::keyEvent(Direction d) {
         break;
     case RIGHT:
         t.move(1, 0);
+        break;
+    case FINISH:
+        if (finish) restart();
+        finish = false;
         break;
     }
     if (!well_.isCollision(t))
